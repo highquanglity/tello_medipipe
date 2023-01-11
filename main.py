@@ -107,9 +107,11 @@ def main():
 
         # Process Key (ESC: end)
         key = cv.waitKey(1) & 0xff
+        print("KEY", key)
         if key == 27:  # ESC
             break
         elif key == 32:  # Space
+            print("SPACE PRESSING")
             if not in_flight:
                 # Take-off drone
                 tello.takeoff()
