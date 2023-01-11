@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import configargparse
 
 import cv2 as cv
@@ -100,18 +98,16 @@ def main():
     number = -1
     battery_status = -1
 
-    tello.move_down(20)
+    tello.move_down(10)
 
     while True:
         fps = cv_fps_calc.get()
 
         # Process Key (ESC: end)
         key = cv.waitKey(1) & 0xff
-        print("KEY", key)
         if key == 27:  # ESC
             break
         elif key == 32:  # Space
-            print("SPACE PRESSING")
             if not in_flight:
                 # Take-off drone
                 tello.takeoff()
@@ -146,7 +142,8 @@ def main():
         gesture_buffer.add_gesture(gesture_id)
 
         # Start control thread
-        threading.Thread(target=tello_control, args=(key, keyboard_controller, gesture_controller,)).start()
+        tello_control(key, keyboard_controller,gesture_controller)
+        
         threading.Thread(target=tello_battery, args=(tello,)).start()
 
         debug_image = gesture_detector.draw_info(debug_image, fps, mode, number)
